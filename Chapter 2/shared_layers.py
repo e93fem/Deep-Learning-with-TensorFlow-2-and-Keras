@@ -15,10 +15,8 @@ def build_model():
 	encoded_input_b = shared_embedding(text_input_b)
 
 	#two logistic predictions at the end
-	prediction_a = 
-		tf.keras.layers.Dense(1, activation='sigmoid', name='prediction_a')(encoded_input_a)
-	prediction_b = 
-		tf.keras.layers.Dense(1, activation='sigmoid', name='prediction_b')(encoded_input_b)
+	prediction_a = tf.keras.layers.Dense(1, activation='sigmoid', name='prediction_a')(encoded_input_a)
+	prediction_b = tf.keras.layers.Dense(1, activation='sigmoid', name='prediction_b')(encoded_input_b)
 
 	# this model has 2 inputs, and 2 outputs
 	# in the middle we have a shared model
