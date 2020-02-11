@@ -20,8 +20,7 @@ def build_model():
 
 	# this model has 2 inputs, and 2 outputs
 	# in the middle we have a shared model
-	model = tf.keras.Model(inputs=[text_input_a, text_input_b], 
-	outputs=[prediction_a, prediction_b])
+	model = tf.keras.Model(inputs=[text_input_a, text_input_b], outputs=[prediction_a, prediction_b])
 
 	tf.keras.utils.plot_model(model, to_file="shared_model.png")
 
