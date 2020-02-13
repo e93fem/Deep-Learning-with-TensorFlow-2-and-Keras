@@ -2,25 +2,24 @@ import tensorflow as tf
 from tensorflow.keras import datasets, layers, models, optimizers
 
 
-#define the convnet 
+# define the convnet
 class LeNet:
-	@staticmethod
-	def build(input_shape, classes):
-		model = models.Sequential()
-		# CONV => RELU => POOL
-		model.add(layers.Convolution2D(20, (5, 5), activation='relu',
-			input_shape=input_shape))
-		model.add(layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-		# CONV => RELU => POOL
-		model.add(layers.Convolution2D(50, (5, 5), activation='relu'))
-		model.add(layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-		# Flatten => RELU layers
-		model.add(layers.Flatten())
-		model.add(layers.Dense(500, activation='relu'))
-		# a softmax classifier
-		model.add(layers.Dense(classes, activation="softmax"))
-		return model
-
+    @staticmethod
+    def build(input_shape, classes):
+        model = models.Sequential()
+        # CONV => RELU => POOL
+        model.add(layers.Convolution2D(20, (5, 5), activation='relu',
+                                       input_shape=input_shape))
+        model.add(layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        # CONV => RELU => POOL
+        model.add(layers.Convolution2D(50, (5, 5), activation='relu'))
+        model.add(layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        # Flatten => RELU layers
+        model.add(layers.Flatten())
+        model.add(layers.Dense(500, activation='relu'))
+        # a softmax classifier
+        model.add(layers.Dense(classes, activation="softmax"))
+        return model
 
 
 # network and training
@@ -28,9 +27,9 @@ EPOCHS = 5
 BATCH_SIZE = 128
 VERBOSE = 1
 OPTIMIZER = tf.keras.optimizers.Adam()
-VALIDATION_SPLIT=0.90
+VALIDATION_SPLIT = 0.20
 
-IMG_ROWS, IMG_COLS = 28, 28 # input image dimensions
+IMG_ROWS, IMG_COLS = 28, 28  # input image dimensions
 INPUT_SHAPE = (IMG_ROWS, IMG_COLS, 1)
 NB_CLASSES = 10  # number of outputs = number of digits
 
@@ -58,23 +57,21 @@ y_test = tf.keras.utils.to_categorical(y_test, NB_CLASSES)
 # initialize the optimizer and model
 model = LeNet.build(input_shape=INPUT_SHAPE, classes=NB_CLASSES)
 model.compile(loss="categorical_crossentropy", optimizer=OPTIMIZER,
-	metrics=["accuracy"])
+              metrics=["accuracy"])
 model.summary()
 
 # use TensorBoard, princess Aurora!
 callbacks = [
-  # Write TensorBoard logs to `./logs` directory
-  tf.keras.callbacks.TensorBoard(log_dir='./logs')
+    # Write TensorBoard logs to `./logs` directory
+    tf.keras.callbacks.TensorBoard(log_dir='./logs')
 ]
 
 # fit 
-history = model.fit(X_train, y_train, 
-		batch_size=BATCH_SIZE, epochs=EPOCHS, 
-		verbose=VERBOSE, validation_split=VALIDATION_SPLIT,
-		callbacks=callbacks)
+history = model.fit(X_train, y_train,
+                    batch_size=BATCH_SIZE, epochs=EPOCHS,
+                    verbose=VERBOSE, validation_split=VALIDATION_SPLIT,
+                    callbacks=callbacks)
 
 score = model.evaluate(X_test, y_test, verbose=VERBOSE)
 print("\nTest score:", score[0])
 print('Test accuracy:', score[1])
-
-
